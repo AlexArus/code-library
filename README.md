@@ -4,6 +4,6 @@ Categorized code (typescript) library with tests and index
 
 ## Structure
 
-### types
+### Types
 
 TypeScript types library

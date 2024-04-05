@@ -1,36 +1,11 @@
-import { DeepReadonly } from "../Types/deep-readonly.ts";
+import { DeepReadonly } from "../../Types/deep-readonly.ts";
+import { ActionAny, Action, ActionInstance } from './store.type.ts';
 
-export type Action<Type extends string | unknown, Payload = undefined> =
-  Payload extends undefined ? {
-      id: symbol;
-      type: Type;
-    }
-    : {
-      id: symbol;
-      type: Type;
-      payload: Payload;
-    };
-
-export type ActionAny = Action<any, any>;
-
-export type ActionCreator<Type extends string | unknown, Payload = undefined> =
-  Payload extends undefined ? () => Action<Type, Payload>
-    : (payload: Payload) => Action<Type, Payload>;
-
-export type ActionGuard<Type extends string | unknown, Payload = undefined> = (
-  action: ActionAny,
-) => action is Action<Type, Payload>;
-
-export type ActionInstance<Type extends string | unknown, Payload = undefined> =
-  Payload extends undefined ? {
-      (): Action<Type, Payload>;
-      is: ActionGuard<Type, Payload>;
-    }
-    : {
-      (payload: Payload): Action<Type, Payload>;
-      is: ActionGuard<Type, Payload>;
-    };
-
+/**
+ * Simple action factory
+ * @param type {string} - action type
+ * @returns 
+ */
 export const createAction = <Type extends string, Payload = undefined>(
   type: Type,
 ) => {
@@ -67,7 +42,7 @@ export const createStore = <State>(
   const store = {
     getState: () => state as DeepReadonly<State>,
 
-    addAction: <Type extends string, Payload = undefined>(
+    createAction: <Type extends string, Payload = undefined>(
       type: Type,
       reducer?: (action: Action<Type, Payload>, state: State) => void,
       effect?: (
@@ -129,7 +104,7 @@ export const createStore = <State>(
         );
     },
 
-    addView: <Name extends string, Model>(
+    createView: <Name extends string, Model>(
       name: Name,
       model: Model,
       update: (

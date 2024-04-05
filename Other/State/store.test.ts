@@ -1,6 +1,7 @@
 import { assertEquals } from "https://deno.land/std@0.220.0/assert/mod.ts";
 
-import { ActionAny, createAction, createStore } from "./store.ts";
+import { createAction, createStore } from "./store.ts";
+import { ActionAny } from './store.type.ts';
 
 const test1 = "test1";
 const test2 = "test2";
@@ -36,7 +37,7 @@ Deno.test("Store", async (tst) => {
   });
 
   await tst.step("actions", async () => {
-    const action3 = store.addAction<"action3", string>(
+    const action3 = store.createAction<"action3", string>(
       "action3",
       (action, state) => state.value = action.payload,
     );
@@ -51,7 +52,7 @@ Deno.test("Store", async (tst) => {
   });
 
   await tst.step("view", async () => {
-    const v1 = store.addView("v1", { title: "" }, (action, state) => {
+    const v1 = store.createView("v1", { title: "" }, (action, state) => {
       if (action1.is(action)) {
         return { title: test4 };
       }
