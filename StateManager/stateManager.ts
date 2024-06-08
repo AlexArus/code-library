@@ -1,5 +1,5 @@
-import { DeepReadonly } from "../../Types/deep-readonly.ts";
-import { ActionAny, Action, ActionInstance } from './store.type.ts';
+import { DeepReadonly } from "../Types/deep-readonly.ts";
+import { ActionAny, Action, ActionInstance } from './stateManager.type.ts';
 
 /**
  * Simple action factory
@@ -21,7 +21,7 @@ export const createAction = <Type extends string, Payload = undefined>(
   return actionInstance as ActionInstance<Type, Payload>;
 };
 
-export const createStore = <State>(
+export const createStateManager = <State>(
   state: State,
   rootReducer?: (action: ActionAny, state: State) => void,
   rootEffect?: (
@@ -39,7 +39,7 @@ export const createStore = <State>(
     (action: ActionAny, state: DeepReadonly<State>) => void
   >();
 
-  const store = {
+  const stateManager = {
     getState: () => state as DeepReadonly<State>,
 
     createAction: <Type extends string, Payload = undefined>(
@@ -136,5 +136,5 @@ export const createStore = <State>(
     },
   };
 
-  return store;
+  return stateManager;
 };
